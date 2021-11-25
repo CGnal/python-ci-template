@@ -1,2 +1,3 @@
 # python-docker
-A demo repository for using Docket with python
+
+A demo repository for using Docker with Python
