@@ -14,7 +14,7 @@ setuptools.setup(
     author_email="nromeoarena@cgnal.com",
     description="A template project to be used for any Python project",
     long_description=long_description,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
