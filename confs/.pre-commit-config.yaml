@@ -19,7 +19,7 @@ repos:
         stages: [ commit ]
         files: (^requirements/requirements\.(in|txt)$)
         #TODO: Remove no-emit flag once the package will be available on public pypi
-        args: [ --output-file=requirements/requirements.txt, --no-emit-index-url, requirements/requirements.in ]
+        args: [ --output-file=requirements/requirements.txt, --quiet, --no-emit-index-url, requirements/requirements.in ]
         description: This hook updates requirements from requirements/requirements.in to requirements/requirements.txt
 
       - id: pip-compile
@@ -27,5 +27,6 @@ repos:
         stages: [ commit ]
         files: ^requirements/requirements_dev\.(in|txt)$
         #TODO: Remove no-emit flag once the package will be available on public pypi
-        args: [ --output-file=requirements/requirements_dev.txt, --no-emit-index-url, requirements/requirements_dev.in ]
+        args: [ --output-file=requirements/requirements_dev.txt, --quiet, --no-emit-index-url,
+                requirements/requirements.txt, requirements/requirements_dev.in ]
         description: This hook updates requirements from requirements/requirements_dev.in to requirements/requirements_dev.txt

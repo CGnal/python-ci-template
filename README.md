@@ -5,6 +5,26 @@
 
 This is a template project to be used as a standard, for any Python project.
 
+## Makefile 
+
+The process of installation of requirements, packaging, running checks (static typing, linting, unittests, etc) is 
+done using Makefile. In order to setup and environment that compile and then install all requirements 
+we can simply issue the following commands
+
+```
+make setup    # to install requirments
+make dist     # to build the package
+make install  # to install package
+make checks   # to run all checks
+```
+
+For further information on the make commands, type
+
+```
+make help
+```
+
+
 ## Requirements
 
 This project uses ``pip-tools`` to keep track of requirements. In particular there is a ``requirements`` folder 
@@ -60,7 +80,6 @@ versioneer install
 Running this command will create a few new files for us in our project and also ask us to make some changes to our setup.py file. We need to import versioneer in the setup, replace the version keyword argument with versioneer.get_version() and add a new argument cmdclass=versioneer.get_cmdclass().
 
 ```
-
 setuptools.setup(
     ...
     version=versioneer.get_version(),
