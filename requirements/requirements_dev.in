@@ -1,10 +1,11 @@
--r requirements.txt
--c requirements.txt
 pytest>=6.2.5
 pytest-cov>=3.0.0
-pip-tools>=6.4.0
-pre-commit>=2.16.0
-Sphinx>=4.1.2
-sphinx-rtd-theme>=0.5.2
-recommonmark>=0.7.1
+pip-tools==6.1.0
+# Sphinx>=4.1.2
+# sphinx-rtd-theme>=0.5.2
+# recommonmark>=0.7.1
+mypy>=0.910
+mypy-extensions>=0.4.3
 versioneer>=0.21
+flake8>=3.8.4
+-c requirements.txt

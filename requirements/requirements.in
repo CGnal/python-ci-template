@@ -1,1 +1,4 @@
 Flask>=2.0.2
+importlib-metadata<4.3.0
+typing-extensions>=4.0
+# -c requirements_dev.in
