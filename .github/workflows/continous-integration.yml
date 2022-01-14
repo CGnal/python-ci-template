@@ -14,9 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
       - uses: actions/setup-python@v2.2.2
-      - uses: pre-commit/action@v2.0.3
-        with:
-          extra_args: --verbose
+#      - uses: pre-commit/action@v2.0.3
+#        with:
+#          extra_args: --verbose --config=confs/.pre-commit-config.yaml
 
   build:
     name: Build tool
