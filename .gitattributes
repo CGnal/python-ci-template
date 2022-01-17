@@ -1,1 +1,1 @@
-version/_version.py export-subst
+src/_version.py export-subst
