@@ -4,7 +4,7 @@ style = pep440
 versionfile_source = version/_version.py
 versionfile_build = version/_version.py
 tag_prefix =
-parentdir_prefix = python-ci-template
+parentdir_prefix = {{PROJECT_NAME}}
 
 [tool:pytest]
 addopts = --doctest-modules --cov=./tests
@@ -14,11 +14,11 @@ exclude = __init__.py,versioneer.py,_version.py
 max-line-length = 120
 
 [metadata]
-name = python-ci-template
-url = https://github.com/CGnal/python-ci-template
+name = {{PROJECT_NAME}}
+url = https://github.com/CGnal/{{PROJECT_NAME}}
 author = CGnal s.r.l.
 author_email = info@cgnal.com
-description = A template project to be used for any Python project
+description = {{PROJECT_DESCRIPTION}}
 long_description = file: README.md
 long_description_content_type = text/markdown
 classifiers =
