@@ -15,17 +15,19 @@ import sys
 import configparser
 from datetime import date
 
+BASE_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
+
 config = configparser.ConfigParser()
-config.read('setup.cfg')
-
-sys.path.insert(0, os.path.abspath('.'))
-
+config.read(os.path.join(BASE_FOLDER, 'setup.cfg'))
 
 # -- Project information -----------------------------------------------------
 
 project = config['metadata']['name']
 author = config['metadata']['author']
 copyright = str(date.today().year) + ', ' + author
+package_dir = config["option"]["package_dir"].split("=")[1]
+
+sys.path.insert(0, os.path.join(BASE_FOLDER, package_dir))
 
 # -- General configuration ---------------------------------------------------
 
@@ -61,7 +63,7 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 
 html_theme_options = {'navigation_depth': 6,
                       "sticky_navigation": True}
