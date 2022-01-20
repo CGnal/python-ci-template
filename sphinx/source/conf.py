@@ -16,7 +16,7 @@ import configparser
 from datetime import date
 
 config = configparser.ConfigParser()
-config.read('../../setup.cfg')
+config.read('setup.cfg')
 
 sys.path.insert(0, os.path.abspath('.'))
 
