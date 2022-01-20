@@ -31,22 +31,6 @@ This project uses ``pip-tools`` to keep track of requirements. In particular the
 containing a ``requirements.in, requirements.txt, requirements_dev.in, requirements_dev.txt`` files corresponding to 
 input (``*.in``) and actual (``*.txt``) requirements files for dev and prod environments.
 
-## Pre-commit hooks
-We use ``pre-commit`` to ensure that any update in input requirements files is correctly reflected in actual files.
-Furthermore this project uses pre-commit hooks with ``black`` to format code and ``flake8`` for linting. 
-To configure your local environment please install the development dependencies and set up
-the commit hooks.
-
-```
-$ pip install -r requirements/requirements_dev.txt
-$ pre-commit install
-```
-
-We can check everything works correctly by running pre-commit manually.
-
-```
-$ pre-commit run --all-files
-```
 
 ## Versioning and Semantic Version
 
