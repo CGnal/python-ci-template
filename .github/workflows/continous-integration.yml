@@ -4,7 +4,7 @@ defaults:
   run:
     shell: bash
 
-on: [push, pull_request, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 
 jobs:
 
@@ -14,7 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
       - uses: actions/setup-python@v2.2.2
-        
+      - uses: psf/black@stable
+        with:
+          options: "--check --verbose"
+          src: "./src"
+      - uses: py-actions/flake8@v2
+        with:
+            path: "src"
+
   build:
     name: Build tool
     runs-on: ${{ matrix.os }}
