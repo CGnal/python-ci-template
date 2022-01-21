@@ -52,3 +52,5 @@ jobs:
           pip install -r requirements/requirements_ci.txt
       - name: Run tests
         run: pytest
+      - name: Make documentation
+        run: make --directory=sphinx --file=Makefile html

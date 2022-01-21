@@ -114,7 +114,7 @@ lint: setup_ci
 checks: format mypy lint tests
 
 docs: setup_ci $(doc_files)
-	cd sphinx && make html
+	make --directory=sphinx --file=Makefile html
 
 clean: uninstall
 	rm -rf docs
