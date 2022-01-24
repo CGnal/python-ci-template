@@ -8,6 +8,7 @@ PYTHON = python
 
 folders := src tests
 files := $(shell find . -name "*.py")
+doc_files := $(shell find sphinx -name "*.*")
 
 # Uncomment to store cache installation in the environment
 # package_dir := $(shell python -c 'import site; print(site.getsitepackages()[0])')
@@ -47,17 +48,10 @@ help:
 
 
 $(pre_deps_tag):
-	${PYTHON} -m pip install pip-tools==6.1.0 black==21.12b0
+	grep "^pip-tools\|^black"  requirements/requirements_dev.in | xargs ${PYTHON} -m pip install
 	touch $(pre_deps_tag)
 
-# pre-commit-init: .pre-commit-config.yaml
-# 	${PYTHON} -m pip install pre-commit
-# 	pre-commit install --config=.pre-commit-config.yaml
-#
-# pre-commit-run: pre-commit-init
-# 	pre-commit run --config=.pre-commit-config.yaml --all-files
-
-init: # pre-commit-init
+init: $(pre_deps_tag)
 	@echo "This is for initializing the repository"
 
 requirements/requirements.txt: requirements/requirements.in $(pre_deps_tag)
@@ -71,12 +65,12 @@ requirements/requirements_dev.txt: requirements/requirements_dev.in requirements
 reqs_dev: requirements/requirements_dev.txt
 
 $(env_tag): requirements/requirements.txt
-	${PYTHON} -m pip install -r requirements/requirements.txt
+	pip-sync requirements/requirements.txt
 	rm -f $(env_dev_tag)
 	touch $(env_tag)
 
 $(env_dev_tag): requirements/requirements_dev.txt
-	${PYTHON} -m pip install -r requirements/requirements_dev.txt
+	pip-sync requirements/requirements_dev.txt
 	rm -f $(env_tag)
 	touch $(env_dev_tag)
 
@@ -100,7 +94,8 @@ $(install_tag): dist/.build-tag
 uninstall:
 	@echo "Uninstall package $(package_name)"
 	pip uninstall -y $(package_name)
-	rm $(install_tag)
+	pip freeze | grep -v "^-e" | xargs pip uninstall -y
+	rm -f $(env_tag) $(env_dev_tag) $(pre_deps_tag) $(install_tag)
 
 install: $(install_tag)
 
@@ -115,7 +110,10 @@ lint: setup_dev
 
 checks: mypy lint tests
 
-clean:
-	rm -rf $(shell find . -name "*.pyc")
-	rm -rf $(shell find . -name "__pycache__")
+docs: $(doc_files)
+	cd sphinx && make html
+
+clean: uninstall
+	rm -rf docs
+	rm -rf $(shell find . -name "*.pyc") $(shell find . -name "__pycache__")
 	rm -rf dist *.egg-info .mypy_cache .pytest_cache .make_cache $(env_tag) $(env_dev_tag) $(install_tag)
