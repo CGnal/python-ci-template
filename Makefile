@@ -19,7 +19,7 @@ $(shell mkdir -p $(package_dir))
 
 pre_deps_tag := $(package_dir)/.pre_deps
 env_tag := $(package_dir)/.env_tag
-env_dev_tag := $(package_dir)/.env_dev_tag
+env_ci_tag := $(package_dir)/.env_ci_tag
 install_tag := $(package_dir)/.install_tag
 
 # ======================
@@ -34,7 +34,7 @@ help:
 	@echo " "
 	@echo "  - init for setting up the project"
 	@echo "  - setup for installing base requirements"
-	@echo "  - setup_dev for installing requirements for development"
+	@echo "  - setup_ci for installing requirements for development"
 	@echo "  - format for reformatting files to adhere to PEP8 standards"
 	@echo "  - dist for building a tar.gz distribution"
 	@echo "  - install for installing the package"
@@ -48,44 +48,47 @@ help:
 
 
 $(pre_deps_tag):
-	grep "^pip-tools\|^black"  requirements/requirements_dev.in | xargs ${PYTHON} -m pip install
+	grep "^pip-tools\|^black"  requirements/requirements_ci.in | xargs ${PYTHON} -m pip install
 	touch $(pre_deps_tag)
 
 init: $(pre_deps_tag)
 	@echo "This is for initializing the repository"
 
-requirements/requirements.txt: requirements/requirements.in $(pre_deps_tag)
-	pip-compile --output-file=requirements/requirements.txt --quiet --no-emit-index-url requirements/requirements.in
+requirements/requirements.txt: requirements/requirements_ci.txt
+	cat requirements/requirements.in > subset.in
+	echo "-c requirements/requirements_ci.txt" >> subset.in
+	pip-compile --output-file "requirements/requirements.txt" --quiet --no-emit-index-url subset.in
+	rm subset.in
 
 reqs: requirements/requirements.txt
 
-requirements/requirements_dev.txt: requirements/requirements_dev.in requirements/requirements.txt
-	pip-compile --output-file=requirements/requirements_dev.txt --quiet --no-emit-index-url requirements/requirements.txt requirements/requirements_dev.in
+requirements/requirements_ci.txt: requirements/requirements_ci.in requirements/requirements.in $(pre_deps_tag)
+	pip-compile --output-file requirements/requirements_ci.txt --quiet --no-emit-index-url requirements/requirements.in requirements/requirements_ci.in
 
-reqs_dev: requirements/requirements_dev.txt
+reqs_ci: requirements/requirements_ci.txt
 
 $(env_tag): requirements/requirements.txt
 	pip-sync requirements/requirements.txt
-	rm -f $(env_dev_tag)
+	rm -f $(env_ci_tag)
 	touch $(env_tag)
 
-$(env_dev_tag): requirements/requirements_dev.txt
-	pip-sync requirements/requirements_dev.txt
+$(env_ci_tag): requirements/requirements_ci.txt
+	pip-sync requirements/requirements_ci.txt
 	rm -f $(env_tag)
-	touch $(env_dev_tag)
+	touch $(env_ci_tag)
 
 setup: $(env_tag)
 
-setup_dev: $(env_dev_tag)
+setup_ci: $(env_ci_tag)
 
-format:
+format: setup_ci
 	${PYTHON} -m black $(folders)
 
-dist/.build-tag: $(files)
+dist/.build-tag: $(files) requirements/requirements.txt
 	python setup.py sdist
 	ls -rt  dist/* | tail -1 > dist/.build-tag
 
-dist: format dist/.build-tag
+dist: dist/.build-tag
 
 $(install_tag): dist/.build-tag
 	${PYTHON} -m pip install $(shell ls -rt  dist/* | tail -1)
@@ -95,25 +98,25 @@ uninstall:
 	@echo "Uninstall package $(package_name)"
 	pip uninstall -y $(package_name)
 	pip freeze | grep -v "^-e" | xargs pip uninstall -y
-	rm -f $(env_tag) $(env_dev_tag) $(pre_deps_tag) $(install_tag)
+	rm -f $(env_tag) $(env_ci_tag) $(pre_deps_tag) $(install_tag)
 
-install: $(install_tag)
+install: setup $(install_tag)
 
-tests: setup_dev install 
+tests: $(install_tag) setup_ci
 	${PYTHON} -m pytest
 
-mypy: setup_dev install 
+mypy: $(install_tag) setup_ci
 	mypy --follow-imports silent $(folders)
 
-lint: setup_dev
+lint: setup_ci
 	flake8 $(folders)
 
-checks: mypy lint tests
+checks: format mypy lint tests
 
-docs: $(doc_files)
+docs: setup_ci $(doc_files)
 	cd sphinx && make html
 
 clean: uninstall
 	rm -rf docs
 	rm -rf $(shell find . -name "*.pyc") $(shell find . -name "__pycache__")
-	rm -rf dist *.egg-info .mypy_cache .pytest_cache .make_cache $(env_tag) $(env_dev_tag) $(install_tag)
+	rm -rf dist *.egg-info .mypy_cache .pytest_cache .make_cache $(env_tag) $(env_ci_tag) $(install_tag)

@@ -28,8 +28,8 @@ make help
 ## Requirements
 
 This project uses ``pip-tools`` to keep track of requirements. In particular there is a ``requirements`` folder 
-containing a ``requirements.in, requirements.txt, requirements_dev.in, requirements_dev.txt`` files corresponding to 
-input (``*.in``) and actual (``*.txt``) requirements files for dev and prod environments.
+containing a ``requirements.in, requirements.txt, requirements_ci.in, requirements_ci.txt`` files corresponding to 
+input (``*.in``) and actual (``*.txt``) requirements files for CI and prod environments.
 
 
 ## Versioning and Semantic Version
