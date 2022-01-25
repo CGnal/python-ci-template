@@ -32,6 +32,17 @@ containing a ``requirements.in, requirements.txt, requirements_ci.in, requiremen
 input (``*.in``) and actual (``*.txt``) requirements files for CI and prod environments.
 
 
+## Coding style and linting
+
+This project uses ``black`` (https://github.com/psf/black) for formatting and enforcing a coding style.
+Execute ``black src`` to reformat all source code files according to PEP 8 specifications.
+
+We use ``flake8`` () for static code analysis. The configuration file is located in the root: ``.flake8``.
+It coincides with the configuration suggested by the ``black`` developers.
+
+We use ``mypy`` for static type checking. The configuration file is located in the root: ``.mypy.ini``.
+The only settings included in this configuration files are related to the missing typing annotations of some common third party libraries.
+
 ## Versioning and Semantic Version
 
 The present repository had already set up the versioneer using the procedure described below. 
