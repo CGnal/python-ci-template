@@ -4,9 +4,36 @@ nc="\033[0m"
 red="\033[0;31m"
 green="\033[0;32m"
 
+printf "===========================================\n"
+printf "              INITIALIZATION               \n"
+printf "                  SCRIPT                   \n"
+printf "===========================================\n"
+printf "\n"
+
+root_path="$(dirname "$0")/.."
+
+AVAILABLE_VERSIONS=$(cd "${root_path}/templates" && find * -maxdepth 1 -type d | xargs )
+printf "Available Python versions: ${AVAILABLE_VERSIONS}\n"
+printf "Select your version: "
+read -r PYTHON_VERSION
+
+if [ ! -d "${root_path}/templates/${PYTHON_VERSION}" ];
+then
+  echo "Python Version not supported"
+  exit 0
+fi
+
+mkdir -p "${root_path}/requirements"
+mkdir -p "${root_path}/.github/workflows"
+
 # template_file_path:destination_file_path. File paths are relative to the project root
 templates=(
     "templates/setup.cfg.tmpl:setup.cfg"
+    "templates/${PYTHON_VERSION}/requirements.in:requirements/requirements.in"
+    "templates/${PYTHON_VERSION}/requirements_ci.in:requirements/requirements_ci.in"
+    "templates/continous-delivery.yml.tmpl:.github/workflows/continous-delivery.yml"
+    "templates/continous-integration.yml.tmpl:.github/workflows/continous-integration.yml"
+    "templates/Dockerfile.tmpl:Dockerfile"
 )
 
 # placeholder in format placeholder:description
@@ -27,9 +54,8 @@ for placeholder in "${placeholders[@]}" ; do
 done
 printf "Remove templates (Y/n)? "
 read -r remove_templates
-placeholders+=("GITHUB_REPO:Github repository")
-user_values+=("$(git remote get-url origin)")
-root_path="$(dirname "$0")/.."
+placeholders+=("GITHUB_REPO:Github repository", "PYTHON_VERSION:Python Version")
+user_values+=("$(git remote get-url origin)", "${PYTHON_VERSION}")
 
 for template in "${templates[@]}" ; do
     source_path="${root_path}/${template%%:*}"
