@@ -37,10 +37,10 @@ input (``*.in``) and actual (``*.txt``) requirements files for CI and prod envir
 This project uses ``black`` (https://github.com/psf/black) for formatting and enforcing a coding style.
 Execute ``black src`` to reformat all source code files according to PEP 8 specifications.
 
-We use ``flake8`` () for static code analysis. The configuration file is located in the root: ``.flake8``.
+We use ``flake8`` (https://github.com/PyCQA/flake8) for static code analysis. The configuration file is included in ``setup.cfg``.
 It coincides with the configuration suggested by the ``black`` developers.
 
-We use ``mypy`` for static type checking. The configuration file is located in the root: ``.mypy.ini``.
+We use ``mypy`` for static type checking. The configuration is included in ``setup.cfg``.
 The only settings included in this configuration files are related to the missing typing annotations of some common third party libraries.
 
 ## Versioning and Semantic Version
