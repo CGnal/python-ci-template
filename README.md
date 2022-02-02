@@ -5,6 +5,23 @@
 
 This is a template project to be used as a standard, for any Python project.
 
+The template needs to be first initialised after creation using the script `bin/init_repo.sh`. 
+The script will ask the user few informations (among which the 
+Python version to be used) and take care of adapting configurations files accordingly. 
+Multiple Python versions (3.6+) are supported. 
+Depending on the selected Python version different requirements, CI/CD pipelines, 
+docker images, etc should be considered. The `bin/init_repo.sh` will take care of 
+setting up these files consistently. To run the script, navigate first into the `bin` folder and run 
+
+```
+./init_repo
+```
+
+**NOTE:** In the process, you will also be asked if you want to *remove the templates*, 
+in order to keep your repo minimal and avoid cluttering. 
+Please keep in mind that if you do so, you won't be able to re-initialise the files 
+in your repository again. 
+
 ## Makefile 
 
 The process of installation of requirements, packaging, running checks (static typing, linting, unittests, etc) is 
