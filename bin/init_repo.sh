@@ -13,7 +13,7 @@ printf "\n"
 root_path="$(dirname "$0")/.."
 
 AVAILABLE_VERSIONS=$(cd "${root_path}/templates" && find * -maxdepth 1 -type d | xargs )
-printf "Available Python versions: ${AVAILABLE_VERSIONS}\n"
+printf "Available Python versions: %s\n" "${AVAILABLE_VERSIONS}"
 printf "Select your version: "
 read -r PYTHON_VERSION
 
@@ -34,6 +34,9 @@ templates=(
     "templates/continous-delivery.yml.tmpl:.github/workflows/continous-delivery.yml"
     "templates/continous-integration.yml.tmpl:.github/workflows/continous-integration.yml"
     "templates/Dockerfile.tmpl:Dockerfile"
+    "templates/Makefile.tmpl:Makefile"
+    "templates/MANIFEST.in.tmpl:MANIFEST.in"
+    "templates/.gitattributes.tmpl:.gitattributes"
 )
 
 # placeholder in format placeholder:description
@@ -54,8 +57,8 @@ for placeholder in "${placeholders[@]}" ; do
 done
 printf "Remove templates (Y/n)? "
 read -r remove_templates
-placeholders+=("GITHUB_REPO:Github repository", "PYTHON_VERSION:Python Version")
-user_values+=("$(git remote get-url origin)", "${PYTHON_VERSION}")
+placeholders+=("GITHUB_REPO:Github repository" "PYTHON_VERSION:Python Version")
+user_values+=("$(git remote get-url origin)" "${PYTHON_VERSION}")
 
 for template in "${templates[@]}" ; do
     source_path="${root_path}/${template%%:*}"
@@ -69,7 +72,7 @@ for template in "${templates[@]}" ; do
             placeholder_name="${placeholder%%:*}"
             val=${user_values[idx]}
             result="${result//"{{${placeholder_name}}}"/${val}}"
-            if [ "${placeholder_name}" = "SRC" ] && [ ${val} != 'src' ]; then
+            if [ "${placeholder_name}" = "SRC" ] && [ "${val}" != 'src' ]; then
               mv "${root_path}/src" "${root_path}/${val}"
             fi
         done

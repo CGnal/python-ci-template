@@ -4,11 +4,10 @@ FROM python:{{PYTHON_VERSION}}-slim-buster
 
 WORKDIR /app
 
-COPY requirements/requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
-
 COPY . .
+RUN echo -e "{{PYTHON_VERSION}}\n{{PROJECT_NAME}}\n{{SRC}}\n{{PROJECT_DESCRIPTION}}\nn" | bash bin/init_repo.sh
+RUN make init
+RUN make reqs
+RUN make setup
 
 WORKDIR /app/{{SRC}}
-
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]

@@ -5,6 +5,8 @@
 
 This is a template project to be used as a standard, for any Python project.
 
+## Repository initialization 
+
 The template needs to be first initialised after creation using the script `bin/init_repo.sh`. 
 The script will ask the user few informations (among which the 
 Python version to be used) and take care of adapting configurations files accordingly. 
@@ -49,24 +51,30 @@ containing a ``requirements.in, requirements.txt, requirements_ci.in, requiremen
 input (``*.in``) and actual (``*.txt``) requirements files for CI and prod environments.
 
 
-## Coding style and linting
+## Toolset for the project
 
+### Coding style
 This project uses ``black`` (https://github.com/psf/black) for formatting and enforcing a coding style.
-Execute ``black src`` to reformat all source code files according to PEP 8 specifications.
+Run ``make format`` to reformat all source code and tests files to adhere to PEP8 standards.
 
-We use ``flake8`` (https://github.com/PyCQA/flake8) for static code analysis. The configuration file is included in ``setup.cfg``.
-It coincides with the configuration suggested by the ``black`` developers.
+### Linting
+We use ``flake8`` (https://github.com/PyCQA/flake8) for static code analysis. The configuration file is included in ``setup.cfg``. 
+It coincides with the configuration suggested by the ``black`` developers. Run ``make lint`` to analyse all source code and tests files.
 
+### Type hints
 We use ``mypy`` for static type checking. The configuration is included in ``setup.cfg``.
 The only settings included in this configuration files are related to the missing typing annotations of some common third party libraries.
 
-## Versioning and Semantic Version
+### Documentation
+This project uses `Sphinx` (https://www.sphinx-doc.org/en/master/) as a tool to create documentation. Run `make docs` to build documentation 
 
-The present repository had already set up the versioneer using the procedure described below. 
-No need to re-run it. To change configuration parameters (e.g. parentdir_prefix) we simply need to edit the ``setup.cfg`` file.  
+### Semantic Versioning
 
-### Verisioneer setup
+The present repository had already set up the versioneer using the procedure described below. The configuration is included in ``setup.cfg``.  
+ 
 
+#### Verisioneer setup
+The following procedure had already been run and is reported only for documentation purposes, no need to re-run it.
 1. First of all we need to install the versioneer package from pip
 ```
 $ pip install versioneer

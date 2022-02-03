@@ -6,7 +6,7 @@ PYTHON = python
 # This is most often used to store functions
 .PHONY = help
 
-folders := src tests
+folders := {{SRC}} tests
 files := $(shell find . -name "*.py")
 doc_files := $(shell find sphinx -name "*.*")
 

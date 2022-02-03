@@ -7,7 +7,7 @@ tag_prefix =
 parentdir_prefix = {{PROJECT_NAME}}
 
 [tool:pytest]
-addopts = --doctest-modules --cov=./tests
+addopts = --doctest-modules --cov=./{{SRC}}
 
 [flake8]
 exclude = __init__.py,versioneer.py,{{SRC}}/_version.py

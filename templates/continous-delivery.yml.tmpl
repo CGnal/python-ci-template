@@ -54,12 +54,12 @@ jobs:
           body_path: ".github/RELEASE-TEMPLATE.md"
           draft: true
           files: |
-            dist/python-ci-template-${{env.PROJECT_VERSION}}-py3-none-any.whl
-            dist/python-ci-template-${{env.PROJECT_VERSION}}.tar.gz
+            dist/{{PROJECT_NAME}}-${{env.PROJECT_VERSION}}-py3-none-any.whl
+            dist/{{PROJECT_NAME}}-${{env.PROJECT_VERSION}}.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag python-ci-template:${{env.PROJECT_VERSION}}
+        run: docker build . --file Dockerfile --tag {{PROJECT_NAME}}:${{env.PROJECT_VERSION}}
 
 
