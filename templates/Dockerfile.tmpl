@@ -1,13 +1,20 @@
 # syntax=docker/dockerfile:1
 
-FROM python:{{PYTHON_VERSION}}-slim-buster
+FROM python:{{PYTHON_VERSION}}-slim-buster as builder
 
 WORKDIR /app
 
-COPY . .
-RUN echo -e "{{PYTHON_VERSION}}\n{{PROJECT_NAME}}\n{{SRC}}\n{{PROJECT_DESCRIPTION}}\nn" | bash bin/init_repo.sh
-RUN make init
-RUN make reqs
-RUN make setup
+COPY requirements/requirements.txt requirements/requirements.txt
+RUN pip3 install -r requirements/requirements.txt
 
-WORKDIR /app/{{SRC}}
+COPY LICENSE MANIFEST.in versioneer.py setup.py setup.cfg README.md .
+COPY {{SRC}} {{SRC}}
+
+RUN python3 setup.py sdist && ls -t dist/* | tail -n1 | xargs pip install
+
+
+FROM python:{{PYTHON_VERSION}}-slim-buster
+WORKDIR /app
+ENV PYTHONPATH=/app/site-packages
+COPY --from=builder /usr/local/lib/python{{PYTHON_VERSION}}/site-packages /app/site-packages
+ENTRYPOINT ["python"]

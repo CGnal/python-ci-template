@@ -22,10 +22,10 @@ config.read(os.path.join(BASE_FOLDER, 'setup.cfg'))
 
 # -- Project information -----------------------------------------------------
 
-project = config['metadata']['name']
+project = config['sphinx']['name']
 author = config['metadata']['author']
 copyright = str(date.today().year) + ', ' + author
-package_dir = config["option"]["package_dir"].split("=")[1]
+package_dir = config["sphinx"]["package_dir"]
 
 sys.path.insert(0, os.path.join(BASE_FOLDER, package_dir))
 
@@ -34,8 +34,7 @@ sys.path.insert(0, os.path.join(BASE_FOLDER, package_dir))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'm2r2'
-]
+extensions = ['sphinx.ext.autodoc', 'm2r2']
 autoclass_content = 'both'
 
 # Add any paths that contain templates here, relative to this directory.

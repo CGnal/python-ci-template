@@ -89,7 +89,7 @@ dist/.build-tag: $(files) requirements/requirements.txt
 	python setup.py sdist
 	ls -rt  dist/* | tail -1 > dist/.build-tag
 
-dist: dist/.build-tag
+dist: dist/.build-tag setup.py
 
 $(install_tag): dist/.build-tag
 	${PYTHON} -m pip install $(shell ls -rt  dist/* | tail -1)
@@ -98,7 +98,7 @@ $(install_tag): dist/.build-tag
 uninstall:
 	@echo "Uninstall package $(package_name)"
 	pip uninstall -y $(package_name)
-	pip freeze | grep -v "^-e" | xargs pip uninstall -y
+	pip freeze | grep -v "@" | xargs pip uninstall -y
 	rm -f $(env_tag) $(env_ci_tag) $(pre_deps_tag) $(install_tag)
 
 install: setup $(install_tag)
@@ -114,7 +114,8 @@ lint: setup_ci
 
 checks: format mypy lint tests
 
-docs: setup_ci $(doc_files)
+docs: setup_ci $(install_tag) $(doc_files)
+	sphinx-apidoc -f -o sphinx/source/api {{SRC}}
 	make --directory=sphinx --file=Makefile html
 
 clean: uninstall

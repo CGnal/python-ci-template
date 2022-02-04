@@ -26,6 +26,11 @@ max-line-length = 80
 max-complexity = 18
 select = B,C,D,E,F,W,T4,B9,RST
 
+[sphinx]
+
+package_dir = {{SRC}}
+name = {{PROJECT_NAME}}
+
 [mypy]
 
 [mypy-numpy.*]
@@ -62,11 +67,10 @@ classifiers =
 license = MIT
 license_files = LICENSE
 
-[option]
-package_dir=
-    ={{SRC}}
-packages = find:
-python_requires = =={{PYTHON_VERSION}}
+
+[options]
+packages=find:
+python_requires = ~={{PYTHON_VERSION}}
 
 [options.packages.find]
-where = {{SRC}}
+include = {{SRC}}
