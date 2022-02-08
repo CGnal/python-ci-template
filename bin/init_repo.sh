@@ -31,6 +31,7 @@ templates=(
     "templates/${PYTHON_VERSION}/requirements_ci.in:requirements/requirements_ci.in"
     "templates/continous-delivery.yml.tmpl:.github/workflows/continous-delivery.yml"
     "templates/continous-integration.yml.tmpl:.github/workflows/continous-integration.yml"
+    "templates/github-page-build-and-deploy.yml.tmpl:.github/workflows/github-page-build-and-deploy.yml"
     "templates/Dockerfile.tmpl:Dockerfile"
     "templates/Makefile.tmpl:Makefile"
     "templates/MANIFEST.in.tmpl:MANIFEST.in"

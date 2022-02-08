@@ -66,7 +66,13 @@ We use ``mypy`` for static type checking. The configuration is included in ``set
 The only settings included in this configuration files are related to the missing typing annotations of some common third party libraries.
 
 ### Documentation
-This project uses `Sphinx` (https://www.sphinx-doc.org/en/master/) as a tool to create documentation. Run `make docs` to build documentation 
+This project uses `Sphinx` (https://www.sphinx-doc.org/en/master/) as a tool to create documentation. Run `make docs` to build documentation.
+There is a github workflow setup to publish documentation on the repo's Github Page at every push on `main` branch. 
+To let this action run smoothly there must exist the `gh_pages`branch and the Github Page must be manually setted (from
+github repo web interface > Settings > Pages) to use `gh_pages` as source branch and `/root` as source folder. 
+Since this action requires a GITHUB_TOKEN, for its first run in the repo it will be necessary to follow the steps 
+detailed [here]( https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-first-deployment-with-github_token) 
+to make the action run fine from then on.
 
 ### Semantic Versioning
 
