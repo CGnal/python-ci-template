@@ -11,15 +11,13 @@ printf "===========================================\n"
 printf "\n"
 
 root_path="$(dirname "$0")/.."
-
-AVAILABLE_VERSIONS=$(cd "${root_path}/templates" && find * -maxdepth 1 -type d | xargs )
-printf "Available Python versions: %s\n" "${AVAILABLE_VERSIONS}"
-printf "Select your version: "
-read -r PYTHON_VERSION
+PYTHON_VERSION=$(python --version)
+PYTHON_VERSION="${PYTHON_VERSION#Python }"
+PYTHON_VERSION="${PYTHON_VERSION%.*}"
 
 if [ ! -d "${root_path}/templates/${PYTHON_VERSION}" ];
 then
-  echo "Python Version not supported"
+  echo "Python ${PYTHON_VERSION} not supported"
   exit 0
 fi
 
