@@ -11,6 +11,8 @@ addopts = --doctest-modules --cov=./{{SRC}}
 
 [flake8]
 exclude = __init__.py,versioneer.py,{{SRC}}/_version.py
+per-file-ignores =
+    tests/*: D
 ignore =
     # Ignored by black
     E203, E266, E501, W503,
