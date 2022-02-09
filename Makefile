@@ -85,7 +85,7 @@ setup_ci: $(env_ci_tag)
 format: setup_ci
 	${PYTHON} -m black $(folders)
 
-dist/.build-tag: $(files) requirements/requirements.txt
+dist/.build-tag: $(files) setup.cfg requirements/requirements.txt
 	python setup.py sdist
 	ls -rt  dist/* | tail -1 > dist/.build-tag
 
@@ -107,14 +107,14 @@ tests: $(install_tag) setup_ci
 	${PYTHON} -m pytest
 
 mypy: $(install_tag) setup_ci
-	mypy --follow-imports silent $(folders)
+	mypy --install-types --non-interactive --follow-imports silent $(folders)
 
 lint: setup_ci
 	flake8 $(folders)
 
 checks: format mypy lint tests
 
-docs: setup_ci $(install_tag) $(doc_files)
+docs: setup_ci $(install_tag) $(doc_files) setup.cfg
 	sphinx-apidoc -f -o sphinx/source/api src
 	make --directory=sphinx --file=Makefile html
 
