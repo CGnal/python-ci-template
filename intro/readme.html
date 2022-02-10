@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Readme File &mdash; TEMPLATE  documentation</title>
+  <title>Readme File &mdash; 3.6  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> TEMPLATE
+            <a href="../index.html" class="icon icon-home"> 3.6
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -69,7 +69,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">TEMPLATE</a>
+          <a href="../index.html">3.6</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -153,7 +153,13 @@ The only settings included in this configuration files are related to the missin
 </section>
 <section id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h3>
-<p>This project uses <code class="docutils literal notranslate"><span class="pre">Sphinx</span></code> (<a class="reference external" href="https://www.sphinx-doc.org/en/master/">https://www.sphinx-doc.org/en/master/</a>) as a tool to create documentation. Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code> to build documentation</p>
+<p>This project uses <code class="docutils literal notranslate"><span class="pre">Sphinx</span></code> (<a class="reference external" href="https://www.sphinx-doc.org/en/master/">https://www.sphinx-doc.org/en/master/</a>) as a tool to create documentation. Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code> to build documentation.
+There is a github workflow setup to publish documentation on the repo’s Github Page at every push on <code class="docutils literal notranslate"><span class="pre">main</span></code> branch.
+To let this action run smoothly there must exist the <code class="docutils literal notranslate"><span class="pre">gh_pages</span></code>branch and the Github Page must be manually setted (from
+github repo web interface &gt; Settings &gt; Pages) to use <code class="docutils literal notranslate"><span class="pre">gh_pages</span></code> as source branch and <code class="docutils literal notranslate"><span class="pre">/root</span></code> as source folder.
+Since this action requires a GITHUB_TOKEN, for its first run in the repo it will be necessary to follow the steps
+detailed <a class="reference external" href="https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-first-deployment-with-github_token">here</a>
+to make the action run fine from then on.</p>
 </section>
 <section id="semantic-versioning">
 <h3>Semantic Versioning<a class="headerlink" href="#semantic-versioning" title="Permalink to this headline"></a></h3>
