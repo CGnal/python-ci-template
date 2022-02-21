@@ -32,6 +32,8 @@ templates=(
     "templates/continous-delivery.yml.tmpl:.github/workflows/continous-delivery.yml"
     "templates/continous-integration.yml.tmpl:.github/workflows/continous-integration.yml"
     "templates/github-page-build-and-deploy.yml.tmpl:.github/workflows/github-page-build-and-deploy.yml"
+    "templates/source_index.rst.tmpl:sphinx/source/index.rst"
+    "templates/userguide_index.rst.tmpl:sphinx/source/userguide/index.rst"
     "templates/Dockerfile.tmpl:Dockerfile"
     "templates/Makefile.tmpl:Makefile"
     "templates/MANIFEST.in.tmpl:MANIFEST.in"
@@ -75,12 +77,14 @@ for template in "${templates[@]}" ; do
               mv "${root_path}/src" "${root_path}/${val}"
             fi
         done
+        mkdir -p "$(dirname "${dest_path}")"
         echo "${result}" > "${dest_path}"
         printf "${green}Processed and created ${nc}%s\n" "${dest_path}"
-        if [ "${remove_templates}" = "Y" ] || [ "${remove_templates}" = "y" ]; then
-          rm "${source_path}"
-        fi
     else
         printf "${red}File not found ${nc}%s\n" "${source_path}"
     fi
 done
+
+if [ "${remove_templates}" = "Y" ] || [ "${remove_templates}" = "y" ]; then
+    rm -rf "templates"
+fi
