@@ -116,7 +116,7 @@ checks: format mypy lint tests
 
 docs: setup_ci $(install_tag) $(doc_files) setup.cfg
 	sphinx-apidoc -f -o sphinx/source/api {{SRC}}
-	make --directory=sphinx --file=Makefile html
+	make --directory=sphinx --file=Makefile clean html
 
 clean: uninstall
 	rm -rf docs

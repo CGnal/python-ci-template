@@ -72,7 +72,9 @@ license_files = LICENSE
 
 [options]
 packages=find:
+package_dir =
+    ={{SRC}}
 python_requires = ~={{PYTHON_VERSION}}
 
 [options.packages.find]
-include = {{SRC}}
+where = {{SRC}}
