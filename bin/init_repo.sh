@@ -73,8 +73,10 @@ for template in "${templates[@]}" ; do
             placeholder_name="${placeholder%%:*}"
             val=${user_values[idx]}
             result="${result//"{{${placeholder_name}}}"/${val}}"
-            if [ "${placeholder_name}" = "SRC" ] && [ "${val}" != 'src' ]; then
-              mv "${root_path}/src" "${root_path}/${val}"
+            if [ "${placeholder_name}" = "SRC" ] && [ ! -d "${root_path}/${val}" ]; then
+              mkdir -p "${root_path}/${val}"
+              cp "${root_path}/src/"*.py "${root_path}/${val}"
+              rm -rf "${root_path}/src"
             fi
         done
         mkdir -p "$(dirname "${dest_path}")"
