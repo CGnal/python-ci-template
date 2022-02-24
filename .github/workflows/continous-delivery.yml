@@ -30,7 +30,15 @@ jobs:
           echo $TAG
           echo $PROJECT_VERSION
           if [[ "$TAG" != "v$PROJECT_VERSION" ]]; then exit 1; fi
-
+      - name: Init Template
+        env:
+          python_version: ${{matrix.python-version}}
+        run: |
+          cd bin
+          echo -e "${python_version}\nTEMPLATE\nsrc\nBasic Template\nn" | bash init_repo.sh
+      - name: Compile Requirements
+        run: |
+          make reqs
       - name: Install
         run: |
           pip install -e .
@@ -79,4 +87,21 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag python-ci-template:${{env.PROJECT_VERSION}}
 
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
+      - name: Push image
+        run: |
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/python-ci-template:${{env.PROJECT_VERSION}}
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "main" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
