@@ -31,6 +31,8 @@ templates=(
     "templates/${PYTHON_VERSION}/requirements_ci.in:requirements/requirements_ci.in"
     "templates/continous-delivery.yml.tmpl:.github/workflows/continous-delivery.yml"
     "templates/continous-integration.yml.tmpl:.github/workflows/continous-integration.yml"
+    "templates/PyPI-release.yml.tmpl:.github/workflows/PyPI-release.yml"
+    "templates/TestPyPI-release.yml.tmpl:.github/workflows/TestPyPI-release.yml"
     "templates/github-page-build-and-deploy.yml.tmpl:.github/workflows/github-page-build-and-deploy.yml"
     "templates/source_index.rst.tmpl:sphinx/source/index.rst"
     "templates/userguide_index.rst.tmpl:sphinx/source/userguide/index.rst"

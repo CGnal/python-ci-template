@@ -53,7 +53,7 @@ $(pre_deps_tag):
 
 requirements/requirements.txt: requirements/requirements_ci.txt
 	cat requirements/requirements.in > subset.in
-	echo "-c requirements/requirements_ci.txt" >> subset.in
+	echo "\n-c requirements/requirements_ci.txt" >> subset.in
 	pip-compile --output-file "requirements/requirements.txt" --quiet --no-emit-index-url subset.in
 	rm subset.in
 
@@ -82,19 +82,19 @@ format: setup_ci
 	${PYTHON} -m black $(folders)
 
 dist/.build-tag: $(files) setup.cfg requirements/requirements.txt
-	python setup.py sdist
+	${PYTHON} setup.py sdist
 	ls -rt  dist/* | tail -1 > dist/.build-tag
 
 dist: dist/.build-tag setup.py
 
 $(install_tag): dist/.build-tag
-	${PYTHON} -m pip install $(shell ls -rt  dist/* | tail -1)
+	${PYTHON} -m pip install $(shell ls -rt  dist/*.tar.gz | tail -1)
 	touch $(install_tag)
 
 uninstall:
 	@echo "Uninstall package $(package_name)"
-	pip uninstall -y $(package_name)
-	pip freeze | grep -v "@" | xargs pip uninstall -y
+	${PYTHON} -m pip uninstall -y $(package_name)
+	${PYTHON} -m pip freeze | grep -v "@" | xargs pip uninstall -y
 	rm -f $(env_tag) $(env_ci_tag) $(pre_deps_tag) $(install_tag)
 
 install: setup $(install_tag)
@@ -116,5 +116,18 @@ docs: setup_ci $(install_tag) $(doc_files) setup.cfg
 
 clean: uninstall
 	rm -rf docs
+	rm -rf build
 	rm -rf $(shell find . -name "*.pyc") $(shell find . -name "__pycache__")
 	rm -rf dist *.egg-info .mypy_cache .pytest_cache .make_cache $(env_tag) $(env_ci_tag) $(install_tag)
+
+publish_test: setup_ci dist
+	${PYTHON} setup.py bdist_wheel; \
+    NAME=$$(${PYTHON} setup.py --fullname); \
+    if [[ $$NAME =~ .*"+".* || $$NAME == "" ]]; then echo "This is a temporary version:" $${NAME}; exit 1;\
+    else ${PYTHON} -m twine upload --repository testpypi dist/$${NAME}*; fi
+
+publish: setup_ci dist
+	${PYTHON} setup.py bdist_wheel; \
+    NAME=$$(${PYTHON} setup.py --fullname); \
+    if [[ "$${NAME}" =~ .*"+".* || "$${NAME}" == "" ]]; then echo "This is a temporary version: $${NAME}"; exit 1; \
+    else ${PYTHON} -m twine upload dist/$${NAME}*; fi

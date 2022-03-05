@@ -25,14 +25,8 @@ jobs:
           python_version: '3.6'
         run: echo -e "${python_version}\nTEMPLATE\nsrc\nBasic Template\nn" | bash bin/init_repo.sh
 
-      - name: Compile Requirements
-        run: make reqs
-
-      - name: Install
-        run: pip install -r requirements/requirements_ci.txt
-
       - name: Generate content
-        run: make --directory=sphinx --file=Makefile html
+        run: make docs
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

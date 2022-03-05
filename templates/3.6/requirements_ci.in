@@ -13,3 +13,4 @@ recommonmark>=0.7
 sphinx-rtd-theme>=0.5
 types-dataclasses>=0.6.4
 versioneer>=0.21
+twine>=3.8
