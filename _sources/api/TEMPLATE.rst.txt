@@ -1,0 +1,10 @@
+TEMPLATE package
+================
+
+Module contents
+---------------
+
+.. automodule:: TEMPLATE
+   :members:
+   :undoc-members:
+   :show-inheritance:

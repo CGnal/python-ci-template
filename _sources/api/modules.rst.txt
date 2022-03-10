@@ -1,0 +1,7 @@
+TEMPLATE
+========
+
+.. toctree::
+   :maxdepth: 4
+
+   TEMPLATE
