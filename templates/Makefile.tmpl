@@ -66,12 +66,12 @@ reqs_ci: requirements/requirements_ci.txt
 
 $(env_tag): requirements/requirements.txt
 	pip-sync requirements/requirements.txt
-	rm -f $(env_ci_tag)
+	rm -f $(env_ci_tag) $(install_tag)
 	touch $(env_tag)
 
 $(env_ci_tag): requirements/requirements_ci.txt
 	pip-sync requirements/requirements_ci.txt
-	rm -f $(env_tag)
+	rm -f $(env_tag) $(install_tag)
 	touch $(env_ci_tag)
 
 setup: $(env_tag)
@@ -88,7 +88,7 @@ dist/.build-tag: $(files) setup.cfg requirements/requirements.txt
 dist: dist/.build-tag setup.py
 
 $(install_tag): dist/.build-tag
-	${PYTHON} -m pip install $(shell ls -rt  dist/*.tar.gz | tail -1)
+	${PYTHON} -m pip install $(shell ls -rt  dist/*.tar.gz | tail -1) --no-deps
 	touch $(install_tag)
 
 uninstall:
@@ -99,10 +99,10 @@ uninstall:
 
 install: setup $(install_tag)
 
-tests: $(install_tag) setup_ci
+tests: setup_ci $(install_tag)
 	${PYTHON} -m pytest
 
-mypy: $(install_tag) setup_ci
+mypy: setup_ci $(install_tag)
 	mypy --install-types --non-interactive --follow-imports silent $(folders)
 
 lint: setup_ci
