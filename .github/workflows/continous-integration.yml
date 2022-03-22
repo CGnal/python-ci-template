@@ -36,7 +36,7 @@ jobs:
       - name: Init Template
         env:
           python_version: ${{matrix.python-version}}
-        run: echo -e "${python_version}\nTEMPLATE\nsrc\nBasic Template\nn" | bash bin/init_repo.sh
+        run: echo -e "Template\nsrc\nBasic Template\nn" | bash bin/init_repo.sh
 
       - name: Check typing, linting, formatting and run unit-tests
         run: make checks
